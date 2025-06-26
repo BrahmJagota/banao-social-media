@@ -25,6 +25,7 @@ const Signup = () => {
   const [hobbies, setHobbies] = useState<string[]>([]);
   const [availableHobbies, setAvailableHobbies] = useState<Hobby[]>([]);
   const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); 
 
   useEffect(() => {
     const fetchHobbies = async () => {
@@ -41,6 +42,7 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true); 
 
     const payload: SignupData = {
       email,
@@ -60,6 +62,8 @@ const Signup = () => {
     } catch (err) {
       console.error(err);
       setMessage('Failed to create user.');
+    } finally {
+      setIsSubmitting(false); 
     }
   };
 
@@ -160,9 +164,14 @@ const Signup = () => {
           <div>
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600 transition"
+              disabled={isSubmitting}
+              className={`w-full py-2 px-4 font-semibold rounded-md transition ${
+                isSubmitting
+                  ? 'bg-green-400 cursor-not-allowed'
+                  : 'bg-green-500 hover:bg-green-600 text-white'
+              }`}
             >
-              Sign Up
+              {isSubmitting ? 'Signing up...' : 'Sign Up'}
             </button>
           </div>
 
@@ -174,7 +183,7 @@ const Signup = () => {
 
         {/* Login link */}
         <p className="mt-4 text-center text-sm">
-          Already have an account?{" "}
+          Already have an account?{' '}
           <button
             type="button"
             onClick={() => navigate('/login')}

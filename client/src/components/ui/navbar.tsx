@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import { removeToken, useAuth } from '../../context/auth';
+import { useAuth } from '../../context/auth';
 
 export default function Navbar() {
-  const {isAuthenticated} = useAuth()
+  const {isAuthenticated, logout} = useAuth()
   const navigate = useNavigate();
   const handleLogout = () => {
-    removeToken();
+    logout();
     navigate('/login')
   };
 
